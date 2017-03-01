@@ -1,0 +1,194 @@
+package homesis_cucumber;
+
+import java.util.regex.Pattern;
+import java.util.concurrent.TimeUnit;
+import org.junit.*;
+import static org.junit.Assert.*;
+import static org.hamcrest.CoreMatchers.*;
+import org.openqa.selenium.*;
+import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.remote.DesiredCapabilities;
+import org.openqa.selenium.support.ui.Select;
+
+import cucumber.api.Scenario;
+import cucumber.api.java.After;
+import cucumber.api.java.Before;
+import cucumber.api.java.ru.Если;
+import cucumber.api.java.ru.И;
+import cucumber.api.java.ru.Тогда;
+
+public class SearchSalesroom {
+  private static WebDriver driver;
+  private String baseUrl;
+  private boolean acceptNextAlert = true;
+  private StringBuffer verificationErrors = new StringBuffer();
+  Peremennie perm = new Peremennie();
+
+  /*@Before
+  public void setUp() throws Exception {
+	
+  }*/
+  @After
+  public void tearDown(Scenario scenario) throws Exception { 
+	  if (scenario.isFailed()) {
+	      // Take a screenshot...
+	      final byte[] screenshot = ((TakesScreenshot) driver).getScreenshotAs(OutputType.BYTES);
+	      scenario.embed(screenshot, "image/png"); // ... and embed it in the report.
+	  }
+  //  this.driver.quit();
+    String verificationErrorString = verificationErrors.toString();
+    if (!"".equals(verificationErrorString)) {
+      fail(verificationErrorString);
+    }
+  }
+  @Если("^Пользователь хочет найти торговую точку$")
+  public void testSearchSalesroom() throws Exception {
+	  System.setProperty("webdriver.gecko.driver","C:\\Users\\EYUMASHEV\\Documents\\ECLproj\\proj111\\geckodriver.exe");
+	  System.setProperty("java.net.preferIPv4Stack" , "true");
+	  System.setProperty("webdriver.firefox.profile", "testUNIT");
+	    DesiredCapabilities caps = DesiredCapabilities.firefox();
+	   // caps.setCapability("firefox_binary","C:\\Users\\EYUMASHEV\\Downloads\\Mozilla Firefox\\firefox.exe");
+	    caps.setBrowserName("firefox");
+	    caps.setPlatform(Platform.WINDOWS);
+	    caps.setCapability("marionette",true);
+	    
+	    driver = new FirefoxDriver(caps);
+    baseUrl = "https://homesis.kz63c2.kz.infra/";
+    driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+    driver.manage().timeouts().pageLoadTimeout(10, TimeUnit.SECONDS);
+	  //driver.get(baseUrl);example mistake
+	  driver.get(baseUrl + "homesis");
+  }
+  @Тогда ("^Пользователь заходит в сервис homesis$")
+  public void login() throws Exception {
+	  driver.findElement(By.id("IDToken1")).clear();
+	    driver.findElement(By.id("IDToken1")).sendKeys(perm.login);
+	    driver.findElement(By.id("IDToken2")).clear();
+	    driver.findElement(By.id("IDToken2")).sendKeys(perm.pass);
+	    driver.findElement(By.name("Login.Submit")).click();
+  }
+  @И ("^Пользователь выбирает меню с поиском торговых точек$")
+  public void chooseMenu() throws Exception {
+    driver.findElement(By.xpath("//tr[3]/td[2]/table/tbody/tr/td")).click();
+    driver.findElement(By.linkText("Sales administration")).click();
+    Thread.sleep(500);
+    driver.findElement(By.xpath("//table[@id='salesroom']/tbody/tr/th[2]/a/nobr")).click();
+    driver.findElement(By.linkText("Clear")).click();
+  }
+  @Тогда ("^Пользователь выполняет начинает выбирать нужные ему параметры и нажимать на поиск$")
+  public void filter() throws Exception {
+    driver.findElement(By.id("name")).clear();
+    driver.findElement(By.id("name")).sendKeys("test");
+    try {
+    	driver.findElement(By.linkText("Search salesroom")).click();
+     } catch (StaleElementReferenceException elementHasDisappeared) {
+    	 driver.findElement(By.linkText("Search salesroom")).click();
+     }
+    Thread.sleep(500);
+    driver.findElement(By.id("partnerCode")).clear();
+    driver.findElement(By.id("partnerCode")).sendKeys("0202");
+    try {
+    	driver.findElement(By.linkText("Search salesroom")).click();
+     } catch (StaleElementReferenceException elementHasDisappeared) {
+    	 driver.findElement(By.linkText("Search salesroom")).click();
+     }
+    driver.findElement(By.id("code")).clear();
+    Thread.sleep(500);
+    driver.findElement(By.id("code")).sendKeys("031");
+    try {
+    	driver.findElement(By.linkText("Search salesroom")).click();
+     } catch (StaleElementReferenceException elementHasDisappeared) {
+    	 driver.findElement(By.linkText("Search salesroom")).click();
+      	 
+     }
+    //driver.findElement(By.linkText("Search salesroom")).click();
+    try {
+    	 new Select(driver.findElement(By.name("status"))).selectByVisibleText("Active");
+     } catch (StaleElementReferenceException elementHasDisappeared) {
+    	 new Select(driver.findElement(By.name("status"))).selectByVisibleText("Active");
+  
+     }
+ //   new Select(driver.findElement(By.name("status"))).selectByVisibleText("Active");
+    Thread.sleep(500);
+ //   driver.findElement(By.cssSelector("option[value=\"ACTIV\"]")).click();
+    try {
+    	driver.findElement(By.linkText("Search salesroom")).click();
+     } catch (StaleElementReferenceException elementHasDisappeared) {
+    	 driver.findElement(By.linkText("Search salesroom")).click();
+     }
+    //driver.findElement(By.xpath("//tr[7]/td")).click();
+    try {
+    	  new Select(driver.findElement(By.id("regionId"))).selectByVisibleText("Актобе");
+     } catch (StaleElementReferenceException elementHasDisappeared) {
+    	  new Select(driver.findElement(By.id("regionId"))).selectByVisibleText("Актобе");
+     }
+    try {
+  	  new Select(driver.findElement(By.id("regionId"))).selectByVisibleText("Актобе");
+   } catch (StaleElementReferenceException elementHasDisappeared) {
+  	  new Select(driver.findElement(By.id("regionId"))).selectByVisibleText("Актобе");
+   }
+    try {
+    	  new Select(driver.findElement(By.id("districtId"))).selectByVisibleText("Актобе DSA_POST");
+     } catch (StaleElementReferenceException elementHasDisappeared) {
+    	  new Select(driver.findElement(By.id("districtId"))).selectByVisibleText("Актобе DSA_POST");
+     }
+   
+    
+  
+   //driver.findElement(By.cssSelector("option[value=\"23\"]")).click();
+    try {
+    	driver.findElement(By.linkText("Search salesroom")).click();
+     } catch (StaleElementReferenceException elementHasDisappeared) {
+    	 driver.findElement(By.linkText("Search salesroom")).click();
+     }
+  }
+  @И ("^После поиска пользователь выбирает вкладку о данных найденной им торговой точки$")
+  public void viewInfo() throws Exception{
+    driver.findElement(By.xpath(".//*[@id='sepTBody']/tr/td[2]/a/img")).click();
+    Thread.sleep(4000);
+    if( SearchSalesroom.driver.toString().contains("null"))
+	  {
+
+	  System.out.print("All Browser windows are closed ");
+	  }
+	  else
+	  {
+		  SearchSalesroom.driver.quit();
+	  }
+  }
+
+ 
+
+  private boolean isElementPresent(By by) {
+    try {
+      driver.findElement(by);
+      return true;
+    } catch (NoSuchElementException e) {
+      return false;
+    }
+  }
+
+  private boolean isAlertPresent() {
+    try {
+      driver.switchTo().alert();
+      return true;
+    } catch (NoAlertPresentException e) {
+      return false;
+    }
+  }
+
+  private String closeAlertAndGetItsText() {
+    try {
+      Alert alert = driver.switchTo().alert();
+      String alertText = alert.getText();
+      if (acceptNextAlert) {
+        alert.accept();
+      } else {
+        alert.dismiss();
+      }
+      return alertText;
+    } finally {
+      acceptNextAlert = true;
+    }
+  }
+}
